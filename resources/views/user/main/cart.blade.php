@@ -20,9 +20,10 @@
                     @foreach ( $cartList as $c)
                     <tr>
                         <td class="align-middle"><img src="{{asset('storage/'. $c->pizza_image)}}" alt="" style="width: 50px; height: 40px"></td>
-                        <td class="align-middle"> {{$c->pizza_name}}
-                        <input type="hidden" name="product_id" value="{{$c->product_id}}">
-                        <input type="hidden" name="user_id" value="{{$c->user_id}}">
+                        <td class="align-middle"> {{$c->pizza_name}}</td>
+                        <input type="hidden" class="product_id" value="{{$c->product_id}}">
+                        <input type="hidden" class="order_id" value="{{$c->order_id}}">
+                        <input type="hidden" class="user_id" value="{{$c->user_id}}">
                     </td>
                         <td class="align-middle" id="price">{{$c->pizza_price}} Ks</td>
                         <td class="align-middle">
@@ -32,7 +33,7 @@
                                     <i class="fa fa-minus"></i>
                                     </button>
                                 </div>
-                                <input type="text" class="form-control form-control-sm bg-secondary border-0 text-center" id="pizzaqty" value={{$c->quantity}}>
+                                <input type="text" class="form-control form-control-sm bg-secondary border-0 text-center" id="qty" value={{$c->quantity}}>
                                 <div class="input-group-btn">
                                     <button class="btn btn-sm btn-primary btn-plus">
                                         <i class="fa fa-plus"></i>
@@ -41,7 +42,7 @@
                             </div>
                         </td>
                         <td class="align-middle" id="total">{{$c->pizza_price * $c->quantity}} Ks</td>
-                        <td class="align-middle"><button class="btn btn-sm btn-danger removeBtn"><i class="fa fa-times"></i></button></td>
+                        <td class="align-middle"><button class="btn btn-sm btn-danger" id="removeBtn"><i class="fa fa-times"></i></button></td>
                     </tr>
 
                     @endforeach
@@ -67,7 +68,9 @@
                         <h5 id="finalPrice">{{$totalPrice+3000}} Ks</h5>
                     </div>
                     <button class="btn btn-block btn-primary font-weight-bold my-3 py-3" id="orderBtn">Proceed To Checkout</button>
+                    <button class="btn btn-block btn-danger font-weight-bold my-3 py-3" id="deleteBtn">Delete Your Cart</button>
                 </div>
+
             </div>
         </div>
     </div>
@@ -81,7 +84,7 @@
             $('.btn-minus').click(function(){
                 $parentNode = $(this).parents('tr');
                 $price = Number($parentNode.find('#price').text().replace('Ks',''));
-                $qty = Number($parentNode.find('#pizzaqty').val());
+                $qty = Number($parentNode.find('#qty').val());
                 $total = $price*$qty;
                 $parentNode.find('#total').html( $total + ' Ks');
 
@@ -91,18 +94,39 @@
             $('.btn-plus').click(function(){
                 $parentNode = $(this).parents('tr');
                 $price = Number($parentNode.find('#price').text().replace('Ks',''));
-                $qty = Number($parentNode.find('#pizzaqty').val());
+                $qty = Number($parentNode.find('#qty').val());
                  $total = $price*$qty;
                 $parentNode.find('#total').html($total + ' Ks');
 
                 summaryCalculation();
             })
 
-            $('.removeBtn').click(function(){
+            $('#removeBtn').click(function(){
                 $parentNode = $(this).parents('tr');
-                $parentNode.remove();
+                $productId = $parentNode.find('.product_id').val();
+                $orderId = $parentNode.find('.order_id').val();
 
+                $.ajax({
+                        type : 'get',
+                        url : 'http://localhost:8000/user/ajax/clear/recentlyCart',
+                        data: {'productId' : $productId, 'orderId': $orderId},
+                        dataType :'json',
+                    })
+
+                $parentNode.remove();
                 summaryCalculation();
+            })
+
+            $('#deleteBtn').click(function(){
+                    $('#dataTable tbody tr').remove();
+                    $('#subTotalPrice').html('0 kyats');
+                    $('#finalPrice').html('3000 kyats');
+
+                    $.ajax({
+                        type : 'get',
+                        url : 'http://localhost:8000/user/ajax/clear/cart',
+                        dataType :'json',
+                    })
             })
 
             function summaryCalculation(){
@@ -122,11 +146,12 @@
                     $orderList.push({
                         'user_id': $(row).find('.user_id').val(),
                         'product_id': $(row).find('.product_id').val(),
-                        'qty': $(row).find('#pizzaqty').val(),
+                        'qty': $(row).find('#qty').val(),
                         "total" : $(row).find('#total').text().replace('Ks','')*1,
                         'order_code' : '0000'+ $random,
                     })
                 });
+                console.log($orderList);
 
                 $.ajax({
                 type : 'get',
@@ -134,11 +159,12 @@
                 url : 'http://localhost:8000/user/ajax/order',
                 dataType :'json',
                 success : function(response){
-                    if(response.status == true){
+                    if(response.status=='true'){
                         window.location.href ='http://localhost:8000/user/home'
                     }
                 }
                 })
+
             })
         })
     </script>

@@ -8,6 +8,8 @@ use App\Http\Controllers\User\UserController;
 use App\Http\Controllers\AdminController;
 use App\Models\Product;
 use App\Http\Controllers\User\AjaxController;
+use App\Http\Controllers\OrderController;
+
 
 Route::middleware([
     'auth:sanctum',
@@ -38,6 +40,7 @@ Route::group(['prefix'=>'category'], function () {
 
 });
 
+
 Route::group(['prefix'=>'admin'], function(){
     //password
     Route::get('change/password', [AdminController::class, "changePassword"])->name('changePassword');
@@ -53,6 +56,11 @@ Route::group(['prefix'=>'admin'], function(){
     Route::get('/list/delete/{id}',[AdminController::class, 'adminDelete'])->name('adminDelete');
     Route::get('/changeRole/{id}',[AdminController::class, 'changeRole'])->name('changeRole');
     Route::post('/change/{id}',[AdminController::class, 'changeR'])->name('changeR');
+
+    Route::group(['prefix'=>'order'], function () {
+        Route::get('/list', [OrderController::class, 'adminOrderList'])->name('adminOrderList');
+        Route::get('/sortStatus', [OrderController::class, 'sortStatus'])->name('sortStatus');
+    });
 });
 
 
@@ -71,6 +79,7 @@ Route::group(['prefix'=>'products'], function(){
 Route::group(['prefix'=>'user'], function () {
   Route::get('/home' , [UserController::class, 'userHomePage'])->name('userHomePage');
   Route::get('/filter/{id}' , [UserController::class, 'categoryFilter'])->name('categoryFilter');
+  Route::get('/history' , [UserController::class, 'orderHistory'])->name('orderHistory');
 
   Route::group(['prefix'=>'pizza'], function () {
     Route::get('/details/{id}' , [UserController::class, 'details'])->name('details');
@@ -94,7 +103,8 @@ Route::group(['prefix'=>'user'], function () {
    Route::get('/pizza/list', [AjaxController::class, 'pizzaListAjax'])->name('pizzaListAjax');
    Route::get('/cart', [AjaxController::class, 'addToCart'])->name('addToCart');
    Route::get('/order', [AjaxController::class, 'orderList'])->name('orderList');
-
+   Route::get('/clear/cart', [AjaxController::class, 'clearCart'])->name('clearCart');
+   Route::get('/clear/recentlyCart', [AjaxController::class, 'clearRecentlyCart'])->name('clearRecentlyCart');
   });
 
 });

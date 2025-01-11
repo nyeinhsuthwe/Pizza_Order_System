@@ -14,6 +14,7 @@ use Illuminate\Support\Facades\Auth;
 use Storage;
 use Illuminate\Support\Carbon;
 use App\Models\Cart;
+use App\Models\Order;
 
 class UserController extends Controller
 {
@@ -22,7 +23,8 @@ class UserController extends Controller
         $pizza = Product::orderBy('created_at', 'desc')->get();
         $category= Category::get();
         $cart = Cart::where('user_id', Auth::user()->id)->get();
-        return view('user.main.home', compact('pizza','category','cart'));
+        $history = Order::where('user_id', Auth::user()->id)->get();
+        return view('user.main.home', compact('pizza','category','cart','history'));
 
     }
 
@@ -67,7 +69,8 @@ class UserController extends Controller
     public function categoryFilter($categoryId){
         $pizza = Product::where('category_id', $categoryId)->orderBy('created_at', 'desc')->get();
         $category= Category::get();
-        return view('user.main.home', compact('pizza','category'));
+        $history = Order::where('user_id', Auth::user()->id)->get();
+        return view('user.main.home', compact('pizza','category','history'));
     }
 
     //pizza details pg
@@ -136,6 +139,11 @@ class UserController extends Controller
         }
 
         return view('user.main.cart', compact('cartList','totalPrice'));
+    }
+
+    public function orderHistory() {
+        $order = Order::where('user_id', Auth::user()->id)->orderBy('created_at','desc')->paginate('6');
+        return view ('user.main.history', compact('order'));
     }
 
 }

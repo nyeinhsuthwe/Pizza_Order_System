@@ -44,11 +44,14 @@
                 <div class="row pb-3">
                     <div class="col-12 pb-1">
                         <div class="d-flex align-items-center justify-content-between mb-4">
-                            <a href="{{route('cartList')}}">
-                                <div>
+                            <div>
+                                <a href="{{route('cartList')}}">
                                     <button class="btn btn-sm btn-dark text-white"><i class="fa fa-shopping-cart"></i> {{ isset($cart) && is_countable($cart) ? count($cart) : 0 }}</button>
-                                </div>
-                            </a>
+                                </a>
+                                <a href="{{route('orderHistory')}}">
+                                    <button class="btn btn-sm btn-dark text-white"><i class="fa-solid fa-clock-rotate-left"></i> <span>History</span> {{ isset($history) && is_countable($history) ? count($history) : 0 }}</button>
+                                </a>
+                            </div>
                             <div class="ml-2">
                                 <div class="btn-group">
                                     <select name="sorting" id="sortingOption" class="form-control">
@@ -112,7 +115,7 @@
                 dataType :'json',
                 success : function(response){
                     $list ='';
-                    foreach($i=0, $i<response.length,$i++)
+                    for($i=0; $i<response.length;$i++){
                         $list += `
                         <div class="col-lg-4 col-md-6 col-sm-6 pb-1">
                          <div class="product-item bg-light mb-4" id="myForm">
@@ -139,6 +142,7 @@
                          </div>
                         </div>
                         `;
+                    }
 
                      console.log($list);
 
@@ -154,7 +158,7 @@
                 dataType :'json',
                 success : function(response){
                     $list ='';
-                    foreach($i=0, $i<response.length,$i++)
+                    for($i=0; $i<response.length;$i++){
                         $list += `
                             <div class="col-lg-4 col-md-6 col-sm-6 pb-1">
                          <div class="product-item bg-light mb-4" id="myForm">
@@ -181,6 +185,7 @@
                          </div>
                         </div>
                         `;
+                    }
 
                      $('#dataList').html($list);
                 }

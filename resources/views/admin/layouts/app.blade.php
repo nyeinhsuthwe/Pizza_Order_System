@@ -56,7 +56,11 @@
                         </li>
                         <li>
                             <a href="{{route('productList')}}">
-                                <i class="fa-solid fa-pizza-slice"></i></i>Products</a>
+                                <i class="fa-solid fa-pizza-slice"></i>Products</a>
+                        </li>
+                        <li>
+                            <a href="{{route('adminOrderList')}}">
+                                <i class="fa-solid fa-list"></i>Order List</a>
                         </li>
                     </ul>
                 </nav>
@@ -208,11 +212,14 @@
     <script src="{{asset('admin/vendor/select2/select2.min.js')}}">
     </script>
 
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
     <!-- Main JS-->
     <script src="{{ asset('admin/js/main.js') }}"></script>
 
-</body>
+    {{-- Jquery  --}}
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js" integrity="sha512-JobWAqYk5CSjWuVV3mxgS+MmccJqkrBaDhk8SKS1BW+71dJ9gzascwzW85UwGhxiSyR7Pxhu50k+Nl3+o5I49A==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
+</body>
+@yield('scriptSection')
 </html>
 <!-- end document-->
