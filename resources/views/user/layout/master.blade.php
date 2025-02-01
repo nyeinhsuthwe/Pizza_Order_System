@@ -2,7 +2,6 @@
 <html lang="en">
 
 <head>
-    <meta charset="utf-8">
     <title>MultiShop - Online Shop Website Template</title>
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
     <meta content="Free HTML Templates" name="keywords">
@@ -31,7 +30,7 @@
 <body>
 
   <!-- Navbar Start -->
-  <div class="container-fluid bg-dark mb-30">
+  <div class="container-fluid bg-dark mb-30 w-100">
     <div class="row px-xl-5">
         <div class="col-lg-3 d-none d-lg-block">
             <a href="" class="text-decoration-none">
@@ -53,9 +52,9 @@
                         <a href="cart.html" class="nav-item nav-link">My Cart</a>
                         <a href="contact.html" class="nav-item nav-link">Contact</a>
                     </div>
-                    <div class="navbar-nav ml-auto py-0 d-none d-lg-block">
+                    <div class="navbar-nav mr-5 py-0 d-none d-lg-block ">
 
-                        <div class="dropdown">
+                        <div class="dropdown " >
                             <a class=" bg-primary px-2 py-2 rounded text-decoration-none text-dark dropdown-toggle" href="" data-bs-toggle="dropdown" aria-expanded="false">
                                 <i class="fa-solid fa-user text-dark   text-primary"></i> {{Auth::user()->name}} &ensp;
                             </a>

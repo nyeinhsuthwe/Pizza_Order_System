@@ -146,4 +146,19 @@ class UserController extends Controller
         return view ('user.main.history', compact('order'));
     }
 
+    //direct user List page
+    public function userList(){
+        $users = User::where('role','user')->paginate(3);
+        return view('admin.user.list', compact('users'));
+    }
+
+    //change user role
+    public function userRole(Request $request){
+        $updateSource = [
+            'role' => $request->role
+        ];
+
+        User::where('id', $request->userId)->update($updateSource);
+    }
+
 }

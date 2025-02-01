@@ -59,7 +59,14 @@ Route::group(['prefix'=>'admin'], function(){
 
     Route::group(['prefix'=>'order'], function () {
         Route::get('/list', [OrderController::class, 'adminOrderList'])->name('adminOrderList');
-        Route::get('/sortStatus', [OrderController::class, 'sortStatus'])->name('sortStatus');
+        Route::post('/sortStatus', [OrderController::class, 'sortStatus'])->name('sortStatus');
+        Route::get('/changeStatus', [OrderController::class, 'changeStatus'])->name('changeStatus');
+        Route::get('/orderInfo/{orderCode}',[OrderController::class, 'orderInfo'])->name('orderInfo');
+    });
+
+    Route::group(['prefix'=>'user'], function () {
+        Route::get('/list', [UserController::class, 'userList'])->name('userList');
+        Route::get('/user/role', [UserController::class, 'userRole'])->name('userRole');
     });
 });
 
